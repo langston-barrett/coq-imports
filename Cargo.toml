@@ -1,0 +1,15 @@
+[package]
+name = "coq-imports"
+version = "0.1.0"
+authors = ["Langston Barrett <langston.barrett@gmail.com>"]
+
+[lib]
+name = "coq_imports_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "coq-imports"
+path = "src/main.rs"
+
+[dependencies]
+clap = "2.32.0"
