@@ -6,26 +6,6 @@
 
 *** sorting imports
 
-    Turn this:
-    #+begin_src coq
-      Require Import UniMath.Foundations.PartD.
-      Require Import UniMath.CategoryTheory.Core.Categories.
-      Require Import UniMath.CategoryTheory.functor_categories.
-      Require Import UniMath.Foundations.Sets.
-
-      Require Import UniMath.CategoryTheory.Core.Isos.
-      Require Import UniMath.MoreFoundations.Tactics.
-    #+end_src
-    Into this:
-    #+begin_src coq
-      Require Import UniMath.Foundations.PartD.
-      Require Import UniMath.Foundations.Sets.
-
-      Require Import UniMath.MoreFoundations.Tactics.
-
-      Require Import UniMath.CategoryTheory.Core.Categories.
-      Require Import UniMath.CategoryTheory.Core.Isos.
-      Require Import UniMath.CategoryTheory.functor_categories.
-    #+end_src
+    (Not finished)
 
 *** inserting into sorted imports

@@ -4,11 +4,30 @@
 extern crate coq_imports_lib;
 use coq_imports_lib::{subcmd_organize, subcmd_insert, config_from_matches};
 
+extern crate log;
+extern crate env_logger;
+extern crate pretty_env_logger;
+use std::io::Write;
+use log::LevelFilter;
+use env_logger::{WriteStyle};
+use pretty_env_logger::{formatted_builder};
+
 extern crate clap;
 use clap::{Arg, App, SubCommand};
 
 // --------------------------------------------------------------
 // ** Main
+
+fn logging(verbosity: u8) {
+    let mut builder = formatted_builder();
+    (match verbosity {
+        1 => builder.filter(None, LevelFilter::Error),
+        2 => builder.filter(None, LevelFilter::Info),
+        3 => builder.filter(None, LevelFilter::Debug),
+        _ => builder.filter(None, LevelFilter::Warn),
+    }).format(|buf, record| writeln!(buf, "{} - {}", record.level(), record.args()))
+      .write_style(WriteStyle::Always).init();
+}
 
 fn main() -> std::io::Result<()> {
 
@@ -36,12 +55,14 @@ fn main() -> std::io::Result<()> {
                                    .index(2)))
                   .get_matches();
 
-    if let Some(matches) = matches.subcommand_matches("organize") {
-        subcmd_organize(config_from_matches(matches))?;
+    logging(matches.occurrences_of("v") as u8);
 
-    } else if let Some(matches) = matches.subcommand_matches("insert") {
-        subcmd_insert(config_from_matches(matches),
-                      matches.value_of("INPUT").unwrap())?;
+    if let Some(sub_matches) = matches.subcommand_matches("organize") {
+        subcmd_organize(config_from_matches(&matches, sub_matches))?;
+
+    } else if let Some(sub_matches) = matches.subcommand_matches("insert") {
+        subcmd_insert(config_from_matches(&matches, sub_matches),
+                      sub_matches.value_of("MODULE").unwrap())?;
     }
     else {
         println!("Unrecognized subcommand (try `--help`)")
